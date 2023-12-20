@@ -2,37 +2,45 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const AllocationForm = (props) => {
-    const { dispatch,remaining  } = useContext(AppContext);
+    const { dispatch,remaining, currency  } = useContext(AppContext);
 
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    
 
     const submitEvent = () => {
-
-            if(cost > remaining) {
-                alert("The value cannot exceed remaining funds  £"+remaining);
-                setCost("");
-                return;
-            }
+        if (isNaN(cost) || cost.trim() === '') {
+            window.alert('Please enter a valid number for the cost.');
+            return; 
+        } else {
+            setErrorMessage(''); 
+        }
+        const numericCost = Number(cost);
+        if(numericCost > remaining) {
+            alert("The value cannot exceed remaining funds £" + remaining);
+            setCost("");
+            return; 
+        }
 
         const expense = {
             name: name,
-            cost: parseInt(cost),
+            cost: numericCost,
         };
+    
         if(action === "Reduce") {
             dispatch({
                 type: 'RED_EXPENSE',
                 payload: expense,
             });
         } else {
-                dispatch({
-                    type: 'ADD_EXPENSE',
-                    payload: expense,
-                });
-            }
+            dispatch({
+                type: 'ADD_EXPENSE',
+                payload: expense,
+            });
+        }
     };
-
     return (
         <div>
             <div className='row'>
@@ -59,10 +67,10 @@ const AllocationForm = (props) => {
                 <option value="Reduce" name="Reduce">Reduce</option>
                   </select>
                   <span 
-                  style={{marginLeft:'2rem'}}>£</span>
+                  style={{marginLeft:'2rem'}}>{currency}</span>
                     <input
                         required='required'
-                        type='number'
+                        type='any'
                         id='cost'
                         value={cost}
                         style={{marginLeft: '0.3rem' , size: 10}}
@@ -72,6 +80,7 @@ const AllocationForm = (props) => {
                     <button className="btn btn-primary" onClick={submitEvent} style={{ marginLeft: '2rem' }}>
                         Save
                     </button>
+                    {errorMessage && <div style={{ color: 'red', marginTop: '10px' ,marginLeft:'10px' }}>{errorMessage}</div>}
                 </div>
                 </div>
 

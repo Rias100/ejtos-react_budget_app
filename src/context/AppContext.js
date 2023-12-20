@@ -30,6 +30,12 @@ export const AppReducer = (state, action) => {
                     ...state
                 }
             }
+            case 'DEC_EXPENSE':
+                return{
+                    ...state,
+                expenses: state.expenses.map(expense => 
+                    expense.name === action.payload.name ? 
+                    { ...expense, cost: expense.cost - action.payload.cost } : expense)};
             case 'RED_EXPENSE':
                 const red_expenses = state.expenses.map((currentExp)=> {
                     if (currentExp.name === action.payload.name && currentExp.cost - action.payload.cost >= 0) {
@@ -57,27 +63,34 @@ export const AppReducer = (state, action) => {
                 ...state,
                 budget
             };
-        case 'SET_BUDGET':
-            action.type = "DONE";
-            state.budget = action.payload;
-            const totalExpenses = state.expenses.reduce((total, expense) => total + expense.cost, 0);
-            if (action.payload < totalExpenses) {
-                alert("You cannot set the budget lower than the total expenses");
-                return {
-                    ...state, // keep the state the same, do not update the budget
-                };
-            } else {
-                return {
-                    ...state,
-                    budget: action.payload, // update the budget since it's not lower than total expenses
-                };
-            }
-        
+            case 'SET_BUDGET':
+                const totalExpenses = state.expenses.reduce((total, expense) => total + expense.cost, 0);
+                const upperLimit = 20000;
+            
+                if (action.payload < totalExpenses) {
+                    alert("You cannot set the budget lower than the spending");
+                    return {
+                        ...state, 
+                    };
+                } else if (action.payload > upperLimit) {
+                    alert(`The budget cannot exceed ${upperLimit}`);
+                    return {
+                        ...state,
+                        budget: upperLimit, 
+                    };
+                } else {
+                    return {
+                        ...state,
+                        budget: action.payload, 
+                    };
+                }
         case 'CHG_CURRENCY':
             action.type = "DONE";
             state.currency = action.payload;
+
             return {
-                ...state
+                ...state,
+                currency: action.payload,
             }
 
         default:
@@ -87,7 +100,7 @@ export const AppReducer = (state, action) => {
 
 // 1. Sets the initial state when the app loads
 const initialState = {
-    budget: 1670,
+    budget: 2000,
     expenses: [
         { id: "Marketing", name: 'Marketing', cost: 750 },
         { id: "Finance", name: 'Finance', cost: 300 },
@@ -95,7 +108,7 @@ const initialState = {
         { id: "Human Resource", name: 'Human Resource', cost: 40 },
         { id: "IT", name: 'IT', cost: 500 },
     ],
-    currency: '£'
+    currency:'£',
 };
 
 // 2. Creates the context this is the thing our components import and use to get the state

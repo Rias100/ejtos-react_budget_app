@@ -1,0 +1,46 @@
+.increase-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 35px;
+    line-height: 1;
+    margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .increase-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .decrease-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 35px;
+    margin-top: 2px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .decrease-btn:hover {
+    background-color: #d32f2f;
+  }
+  

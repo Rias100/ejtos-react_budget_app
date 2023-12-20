@@ -5,8 +5,9 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const Budget = () => {
-    const { budget, dispatch } = useContext(AppContext); // Destructure dispatch from context
+    const { budget, dispatch, currency } = useContext(AppContext); // Destructure dispatch from context
     const [newBudget, setNewBudget] = useState(budget);
+
 
     const handleBudgetChange = (event) => {
         const updatedBudget = parseInt(event.target.value, 10);
@@ -18,7 +19,7 @@ const Budget = () => {
     };
     return (
         <div className='alert alert-secondary'>
-            <span>Budget: £</span>
+            <span>Budget: {currency}</span>
             <input
                 type="number"
                 step="10"
